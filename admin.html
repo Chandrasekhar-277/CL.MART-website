@@ -3,30 +3,110 @@
 <head>
   <title>CL MART Admin Panel</title>
 </head>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CL MART Admin Panel</title>
+</head>
+
 <body style="font-family:Arial; background:#f1f8e9;">
 
-  <h2 style="text-align:center;">CL MART – Admin Dashboard</h2>
+<h2 style="text-align:center;">CL MART – Product Management</h2>
 
-  <div style="width:80%; margin:auto;">
-    <h3>Customer Management System</h3>
+<div style="width:90%; margin:auto; background:white; padding:20px; border-radius:8px;">
 
-    <ul>
-      <li>Add Customers</li>
-      <li>View Orders</li>
-      <li>Manage Products</li>
-      <li>Update Prices</li>
-    </ul>
+  <!-- ADD PRODUCT FORM -->
+  <h3>Add Product</h3>
 
-    <button onclick="logout()" style="padding:10px; background:#c62828; color:white; border:none;">
-      Logout
-    </button>
-  </div>
+  <input id="code" placeholder="Product Code" style="padding:8px; width:20%;">
+  <input id="name" placeholder="Product Name" style="padding:8px; width:35%;">
+  <input id="price" placeholder="Price" style="padding:8px; width:20%;">
 
-  <script>
-    function logout() {
-      window.location.href = "index.html";
+  <button onclick="addProduct()" style="padding:10px; background:#2e7d32; color:white; border:none;">
+    Add Product
+  </button>
+
+  <hr><br>
+
+  <!-- PRODUCT LIST -->
+  <h3>Product List</h3>
+
+  <table border="1" width="100%" cellpadding="10">
+    <thead>
+      <tr style="background:#c8e6c9;">
+        <th>Code</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="productTable"></tbody>
+  </table>
+
+  <br>
+  <button onclick="logout()" style="padding:10px; background:#c62828; color:white; border:none;">
+    Logout
+  </button>
+
+</div>
+
+<script>
+  let products = JSON.parse(localStorage.getItem("products")) || [];
+
+  function displayProducts() {
+    let table = document.getElementById("productTable");
+    table.innerHTML = "";
+
+    products.forEach((p, index) => {
+      table.innerHTML += `
+        <tr>
+          <td>${p.code}</td>
+          <td>${p.name}</td>
+          <td>${p.price}</td>
+          <td>
+            <button onclick="deleteProduct(${index})" style="background:red; color:white; border:none;">
+              Delete
+            </button>
+          </td>
+        </tr>`;
+    });
+  }
+
+  function addProduct() {
+    let code = document.getElementById("code").value;
+    let name = document.getElementById("name").value;
+    let price = document.getElementById("price").value;
+
+    if (code === "" || name === "" || price === "") {
+      alert("Please fill all fields");
+      return;
     }
-  </script>
+
+    products.push({ code, name, price });
+    localStorage.setItem("products", JSON.stringify(products));
+
+    document.getElementById("code").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+
+    displayProducts();
+  }
+
+  function deleteProduct(index) {
+    products.splice(index, 1);
+    localStorage.setItem("products", JSON.stringify(products));
+    displayProducts();
+  }
+
+  function logout() {
+    window.location.href = "index.html";
+  }
+
+  displayProducts();
+</script>
+
+</body>
+</html>
 
 </body>
 </html>
