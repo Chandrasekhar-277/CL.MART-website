@@ -134,7 +134,6 @@ function addNote() {
   document.getElementById("adminNote").value = "";
   displayNotes();
 }
-
 function deleteNote(index) {
   notes.splice(index, 1);
   localStorage.setItem("adminNotes", JSON.stringify(notes));
@@ -146,7 +145,7 @@ displayNotes();
 
 </script>
 
-</body>
+
 </html>
 <hr><br>
 
