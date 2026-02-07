@@ -103,10 +103,66 @@
   }
 
   displayProducts();
+  // ===== ADMIN NOTES CODE START =====
+let notes = JSON.parse(localStorage.getItem("adminNotes")) || [];
+let noteList = document.getElementById("noteList");
+
+function displayNotes() {
+  noteList.innerHTML = "";
+  notes.forEach((n, i) => {
+    noteList.innerHTML += `
+      <li style="margin-bottom:10px;">
+        ${n}
+        <button onclick="deleteNote(${i})"
+          style="margin-left:10px; background:red; color:white; border:none;">
+          Delete
+        </button>
+      </li>
+    `;
+  });
+}
+
+function addNote() {
+  let note = document.getElementById("adminNote").value;
+  if (note === "") {
+    alert("Write something");
+    return;
+  }
+  notes.unshift(note);
+  localStorage.setItem("adminNotes", JSON.stringify(notes));
+  document.getElementById("adminNote").value = "";
+  displayNotes();
+}
+
+function deleteNote(index) {
+  notes.splice(index, 1);
+  localStorage.setItem("adminNotes", JSON.stringify(notes));
+  displayNotes();
+}
+
+displayNotes();
+// ===== ADMIN NOTES CODE END =====
+
 </script>
 
 </body>
 </html>
+<hr><br>
+
+<h3>Post Admin Update</h3>
+
+<textarea id="adminNote" placeholder="Write update for customers..."
+  style="width:100%; padding:10px; height:80px;"></textarea><br><br>
+
+<button onclick="addNote()"
+  style="padding:10px; background:#1565c0; color:white; border:none;">
+  Post Update
+</button>
+
+<h3 style="margin-top:30px;">Posted Updates</h3>
+<ul id="noteList"></ul>
+
+
 
 </body>
 </html>
