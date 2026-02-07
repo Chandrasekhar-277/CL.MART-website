@@ -20,6 +20,8 @@ html, body {
   <a href="#gallery" style="color:white; margin:15px;">Gallery</a>
   <a href="#contact" style="color:white; margin:15px;">Contact</a>
   <a href="login.html" style="color:white; margin:15px;">Admin Login</a>
+  <a href="#feedback" style="color:white; margin:15px;">Feedback</a>
+
 
 </nav>
 
@@ -230,6 +232,20 @@ html, body {
     </div>
 
   </div>
+ <div id="feedback" style="padding:50px; background:#e8f5e9;">
+  <h2 style="text-align:center;">Customer Feedback</h2>
+
+  <div style="max-width:500px; margin:auto; background:white; padding:20px; border-radius:8px;">
+    <input id="fname" placeholder="Your Name" style="width:100%; padding:8px;"><br><br>
+    <textarea id="fmsg" placeholder="Your Feedback" style="width:100%; padding:8px;"></textarea><br><br>
+    <button onclick="addFeedback()" style="width:100%; padding:10px; background:#2e7d32; color:white; border:none;">
+      Submit Feedback
+    </button>
+  </div>
+
+  <div id="feedbackList" style="max-width:600px; margin:30px auto;"></div>
+</div>
+
 </div>
 
 
@@ -258,6 +274,42 @@ html, body {
 </script>
 
 
+<script>
+  let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+  let feedbackList = document.getElementById("feedbackList");
+
+  function displayFeedback() {
+    feedbackList.innerHTML = "";
+    feedbacks.forEach(f => {
+      feedbackList.innerHTML += `
+        <div style="background:white; padding:15px; margin-bottom:10px; border-left:5px solid #2e7d32;">
+          <strong>${f.name}</strong>
+          <p>${f.msg}</p>
+        </div>
+      `;
+    });
+  }
+
+  function addFeedback() {
+    let name = document.getElementById("fname").value;
+    let msg = document.getElementById("fmsg").value;
+
+    if (name === "" || msg === "") {
+      alert("Please fill all fields");
+      return;
+    }
+
+    feedbacks.push({ name, msg });
+    localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+
+    document.getElementById("fname").value = "";
+    document.getElementById("fmsg").value = "";
+
+    displayFeedback();
+  }
+
+  displayFeedback();
+</script>
 
 </body>
 </html>
