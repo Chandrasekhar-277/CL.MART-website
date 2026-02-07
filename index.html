@@ -236,11 +236,28 @@ html, body {
   <h2 style="text-align:center;">Customer Feedback</h2>
 
   <div style="max-width:500px; margin:auto; background:white; padding:20px; border-radius:8px;">
-    <input id="fname" placeholder="Your Name" style="width:100%; padding:8px;"><br><br>
-    <textarea id="fmsg" placeholder="Your Feedback" style="width:100%; padding:8px;"></textarea><br><br>
-    <button onclick="addFeedback()" style="width:100%; padding:10px; background:#2e7d32; color:white; border:none;">
-      Submit Feedback
-    </button>
+    <div style="max-width:500px; margin:auto; background:white; padding:25px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+  
+  <input id="fname" placeholder="Your Name" style="width:100%; padding:10px; margin-bottom:10px;">
+
+  <select id="frating" style="width:100%; padding:10px; margin-bottom:10px;">
+    <option value="">Rate Us</option>
+    <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+    <option value="4">⭐⭐⭐⭐ Very Good</option>
+    <option value="3">⭐⭐⭐ Good</option>
+    <option value="2">⭐⭐ Fair</option>
+    <option value="1">⭐ Poor</option>
+  </select>
+
+  <textarea id="fmsg" placeholder="Your Feedback" style="width:100%; padding:10px;"></textarea><br><br>
+
+  <button onclick="addFeedback()" style="width:100%; padding:12px; background:#2e7d32; color:white; border:none; border-radius:6px;">
+    Submit Feedback
+  </button>
+
+</div>
+
+  
   </div>
 
   <div id="feedbackList" style="max-width:600px; margin:30px auto;"></div>
@@ -275,15 +292,27 @@ html, body {
 
 
 <script>
+ <script>
   let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
   let feedbackList = document.getElementById("feedbackList");
+
+  function stars(count) {
+    return "⭐".repeat(count);
+  }
 
   function displayFeedback() {
     feedbackList.innerHTML = "";
     feedbacks.forEach(f => {
       feedbackList.innerHTML += `
-        <div style="background:white; padding:15px; margin-bottom:10px; border-left:5px solid #2e7d32;">
+        <div style="
+          background:white;
+          padding:20px;
+          margin-bottom:15px;
+          border-radius:10px;
+          box-shadow:0 4px 10px rgba(0,0,0,0.1);
+        ">
           <strong>${f.name}</strong>
+          <div style="color:#ff9800; margin:5px 0;">${stars(f.rating)}</div>
           <p>${f.msg}</p>
         </div>
       `;
@@ -293,23 +322,26 @@ html, body {
   function addFeedback() {
     let name = document.getElementById("fname").value;
     let msg = document.getElementById("fmsg").value;
+    let rating = document.getElementById("frating").value;
 
-    if (name === "" || msg === "") {
+    if (name === "" || msg === "" || rating === "") {
       alert("Please fill all fields");
       return;
     }
 
-    feedbacks.push({ name, msg });
+    feedbacks.push({ name, msg, rating });
     localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
 
     document.getElementById("fname").value = "";
     document.getElementById("fmsg").value = "";
+    document.getElementById("frating").value = "";
 
     displayFeedback();
   }
 
   displayFeedback();
 </script>
+
 
 </body>
 </html>
