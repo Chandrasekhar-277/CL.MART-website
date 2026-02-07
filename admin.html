@@ -108,12 +108,13 @@ let notes = JSON.parse(localStorage.getItem("adminNotes")) || [];
 let noteList = document.getElementById("noteList");
 
 function displayNotes() {
+  let notelist = document.getElementById("noteList");
   noteList.innerHTML = "";
   notes.forEach((n, i) => {
     noteList.innerHTML += `
       <li style="margin-bottom:10px;">
         ${n}
-        <button onclick="deleteNote(${i})"
+        <button onclick="deleteNote(${i})">Delete</button>
           style="margin-left:10px; background:red; color:white; border:none;">
           Delete
         </button>
